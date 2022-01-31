@@ -11,3 +11,5 @@ const user = new mongoose.Schema({
         default: false
     }
 });
+
+export default mongoose.model("User", user);
