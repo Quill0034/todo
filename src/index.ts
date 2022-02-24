@@ -10,9 +10,7 @@ import User from './User';
 import dotenv from 'dotenv';
 import { UserInterface } from './Interfaces/UserInterface';
 
-
-
-
+const LocalStrategy = passportLocal.Strategy
 
 // Middleware
 const app = express();
@@ -28,6 +26,36 @@ app.use(
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
+
+//Passport
+passport.use(new LocalStrategy((username, password, done) => {
+    User.findOne({ username: username }, (err: any, user : any) => {
+        if (err) throw err;
+        if (!user) return done(null, false);
+        bcrypt.compare(password, user.password, (err, result) => {
+            if (err) throw err;
+            if (result === true) {
+                return done(null, user);
+            } else {
+                return done(null, false);
+            }
+        });
+    });
+})
+);
+
+passport.serializeUser((user: any, cb) => {
+    cb(null, user.id);
+});
+passport.deserializeUser((id: string, cb) => {
+    User.findOne({ _id: id}, (err: any, user : any) => {
+        const userInformation = {
+            username: user.username,
+            isAdmin: user.isAdmin
+        };
+        cb(err, userInformation);
+    });
+});
 
 // Routes
 app.post('/register', async (req: Request,res: Response) => {
@@ -50,6 +78,15 @@ app.post('/register', async (req: Request,res: Response) => {
         }
     })
 });
+
+app.post("/login", passport.authenticate("local"), (req, res) => {
+    res.send("Sucessfully Authenticated")
+});
+
+app.get("/user", (req, res) => {
+    res.send(req.user);
+})
+
 
 
 mongoose.connect(
