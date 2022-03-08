@@ -87,7 +87,15 @@ app.get("/user", (req, res) => {
     res.send(req.user);
 })
 
+app.get("/logout", (req, res) => {
+    req.logout();
+    res.send("sucess")
+} )
 
+
+
+
+// *********************************
 
 mongoose.connect(
     "mongodb+srv://quytodo:08100810@todoapp.dxoug.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
