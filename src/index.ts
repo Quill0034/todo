@@ -10,6 +10,8 @@ import User from './User';
 import dotenv from 'dotenv';
 import { UserInterface } from './Interfaces/UserInterface';
 
+dotenv.config()
+
 const LocalStrategy = passportLocal.Strategy
 
 // Middleware
@@ -51,7 +53,8 @@ passport.deserializeUser((id: string, cb) => {
     User.findOne({ _id: id}, (err: any, user : any) => {
         const userInformation = {
             username: user.username,
-            isAdmin: user.isAdmin
+            isAdmin: user.isAdmin,
+            id: user._id
         };
         cb(err, userInformation);
     });
@@ -71,16 +74,17 @@ app.post('/register', async (req: Request,res: Response) => {
             const hashedPassword = await bcrypt.hash(password, 10);
             const newUser = new User ({
                 username,
-                password: hashedPassword
+                password: hashedPassword,
+                isAdmin: true
             });
             await newUser.save();
-            res.send("successfully created new user")
+            res.send("success")
         }
     })
 });
 
 app.post("/login", passport.authenticate("local"), (req, res) => {
-    res.send("Sucessfully Authenticated")
+    res.send("success")
 });
 
 app.get("/user", (req, res) => {
@@ -92,17 +96,51 @@ app.get("/logout", (req, res) => {
     res.send("sucess")
 } )
 
+app.post("/deleteuser", async (req, res) => {
+    const {id} = req.body;
+    await User.findByIdAndDelete(id, (err : Error) => {
+        if (!err) {
+            res.send("success")
+        } else {
+            throw err;
+        }
+    }).clone().catch(function(err){ console.log(err)})
+    
+})
 
-
-
-// *********************************
-
-mongoose.connect(
-    "mongodb+srv://quytodo:08100810@todoapp.dxoug.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-    {
+app.get("/getallusers", async (req, res) => {
+     await User.find({}, (err : Error, data : UserInterface[]) => {
+        if (!err) {
+            const filteredUsers : any = [];
+        data.forEach((item : any) => {
+            const userInformation = {
+                id: item._id,
+                username: item.username,
+                isAdmin: item.isAdmin
+            }
+            filteredUsers.push(userInformation)
+        });
+        res.send(filteredUsers);
+        } else{
+        throw err;
+    }
         
+    }).clone().catch(function(err){ console.log(err)})
+})
+
+ 
+// *********************************
+//mongodb+srv://quytodo:08100810@todoapp.dxoug.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+mongoose.connect(
+    `${process.env.MONGO_URI}`,
+    {
+ 
     }
 ).then(() => console.log("MongoDB sucessfully connected!")).catch(err => console.log(err));
 
 const port = process.env.PORT || 5000; // process.env.port is Heroku's port
 app.listen(port, () => console.log(`Server up and running on port ${port}`));
+
+function item(item: any, arg1: (any: any) => void) {
+    throw new Error('Function not implemented.');
+}
