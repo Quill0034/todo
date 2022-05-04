@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import express, {Request, Response} from 'express';
+import express, {NextFunction, Request, Response} from 'express';
 import cors from 'cors';
 import passport from 'passport';
 import passportLocal from 'passport-local';
@@ -8,7 +8,7 @@ import session from 'express-session';
 import bcrypt from 'bcryptjs';
 import User from './User';
 import dotenv from 'dotenv';
-import { UserInterface } from './Interfaces/UserInterface';
+import { DatabaseUserInterface, UserInterface } from './Interfaces/UserInterface';
 
 dotenv.config()
 
@@ -30,11 +30,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //Passport
-passport.use(new LocalStrategy((username, password, done) => {
-    User.findOne({ username: username }, (err: any, user : any) => {
+passport.use(new LocalStrategy((username : string, password : string, done) => {
+    User.findOne({ username: username }, (err: any, user : DatabaseUserInterface) => {
         if (err) throw err;
         if (!user) return done(null, false);
-        bcrypt.compare(password, user.password, (err, result) => {
+        bcrypt.compare(password, user.password, (err, result : boolean) => {
             if (err) throw err;
             if (result === true) {
                 return done(null, user);
@@ -46,12 +46,12 @@ passport.use(new LocalStrategy((username, password, done) => {
 })
 );
 
-passport.serializeUser((user: any, cb) => {
-    cb(null, user.id);
+passport.serializeUser((user: DatabaseUserInterface, cb) => {
+    cb(null, user._id);
 });
 passport.deserializeUser((id: string, cb) => {
-    User.findOne({ _id: id}, (err: any, user : any) => {
-        const userInformation = {
+    User.findOne({ _id: id}, (err: any, user : DatabaseUserInterface) => {
+        const userInformation : UserInterface = {
             username: user.username,
             isAdmin: user.isAdmin,
             id: user._id
@@ -67,7 +67,7 @@ app.post('/register', async (req: Request,res: Response) => {
         res.send("improper values");
         return;
     }
-    User.findOne({username} , async (err : Error, doc : UserInterface) => {
+    User.findOne({username} , async (err : Error, doc : DatabaseUserInterface) => {
         if (err) throw err;
         if(doc) res.send("User Already Exists");
         if (!doc) {
@@ -75,7 +75,7 @@ app.post('/register', async (req: Request,res: Response) => {
             const newUser = new User ({
                 username,
                 password: hashedPassword,
-                isAdmin: true
+
             });
             await newUser.save();
             res.send("success")
@@ -83,6 +83,24 @@ app.post('/register', async (req: Request,res: Response) => {
     })
 });
 
+const isAdministratorMiddleware = ( req : Request, res : Response, next: NextFunction) => {
+    const { user } : any = req;
+    if(user) {
+        User.findOne({ username: user.username }, (err : any, doc: DatabaseUserInterface) => {
+            if (err) throw err;
+            if (doc?.isAdmin) {
+                next();
+            }
+            else {
+                res.send ("Sorry, only admin's can do this")
+            }
+        })
+    }
+    else {
+        res.send("Sorry, you aren't logged in")
+    }
+} 
+ 
 app.post("/login", passport.authenticate("local"), (req, res) => {
     res.send("success")
 });
@@ -96,9 +114,9 @@ app.get("/logout", (req, res) => {
     res.send("sucess")
 } )
 
-app.post("/deleteuser", async (req, res) => {
-    const {id} = req.body;
-    await User.findByIdAndDelete(id, (err : Error) => {
+app.post("/deleteuser", isAdministratorMiddleware, async (req, res) => {
+    const {id} = req?.body;
+    await User.findByIdAndDelete(id, (err : any) => {
         if (!err) {
             res.send("success")
         } else {
@@ -108,31 +126,51 @@ app.post("/deleteuser", async (req, res) => {
     
 })
 
-app.get("/getallusers", async (req, res) => {
-     await User.find({}, (err : Error, data : UserInterface[]) => {
-        if (!err) {
-            const filteredUsers : any = [];
-        data.forEach((item : any) => {
-            const userInformation = {
-                id: item._id,
-                username: item.username,
-                isAdmin: item.isAdmin
-            }
-            filteredUsers.push(userInformation)
-        });
-        res.send(filteredUsers);
-        } else{
-        throw err;
-    }
+// app.get("/getallusers",isAdministratorMiddleware, async (req, res) => {
+//      await User.find({}, (err, data : DatabaseUserInterface[]) => {
+//         if (!err) {
+//             const filteredUsers : UserInterface = [];
+//         data.forEach((item : DatabaseUserInterface) => {
+//             const userInformation = {
+//                 id: item._id,
+//                 username: item.username,
+//                 isAdmin: item.isAdmin
+//             }
+//             filteredUsers.push(userInformation)
+//         });
+//         res.send(filteredUsers);
+//         } else{
+//         throw err;
+//     }
         
-    }).clone().catch(function(err){ console.log(err)})
-})
+//     }).clone().catch(function(err){ console.log(err)})
+// })
 
- 
+app.get("/getallusers", isAdministratorMiddleware, async (req, res) => {
+    await User.find({}, (err, data: DatabaseUserInterface[]) => {
+      if (err) throw err;
+      const filteredUsers: UserInterface[] = [];
+      data.forEach((item: DatabaseUserInterface) => {
+        const userInformation = {
+          id: item._id,
+          username: item.username,
+          isAdmin: item.isAdmin
+        }
+        filteredUsers.push(userInformation);
+      });
+      res.send(filteredUsers);
+    }).clone().catch(function(err){ console.log(err)})
+  });
+  
+
+
+
+
 // *********************************
 //mongodb+srv://quytodo:08100810@todoapp.dxoug.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 mongoose.connect(
     `${process.env.MONGO_URI}`,
+    //`${process.env.PART1STRING}${process.env.USERNAME}:${process.env.PASSWORD}${process.env.PART2STRING}`,
     {
  
     }
