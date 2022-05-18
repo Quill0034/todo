@@ -1,40 +1,15 @@
-import mongoose from 'mongoose';
 import express, {NextFunction, Request, Response} from 'express';
-import cors from 'cors';
-import PassportConfig from './config/PassportConfig';
-import passport from 'passport';
-import cookieParser from 'cookie-parser';
-import session from 'express-session';
-
-import User from './Model/User';
-import dotenv from 'dotenv';
-import { DatabaseUserInterface, UserInterface } from './Interfaces/UserInterface';
-// import UserRoute from './routes/UserRoute'
 import bcrypt from 'bcryptjs';
-dotenv.config()
+import passport from 'passport';
 
 
-
-// Middleware
-const app = express();
+import User from '../Model/User'
 
 
-app.use(express.json());
-app.use(cors({origin: "http://localhost:3000", credentials: true}))
-app.use(
-    session ({
-        secret: "secretcode",
-        resave: true,
-        saveUninitialized: true,
-    })
-);
-app.use(cookieParser());
-app.use(passport.initialize());
-app.use(passport.session());
-PassportConfig (passport);
+import { DatabaseUserInterface, UserInterface } from 'src/Interfaces/UserInterface';
 
+const app = express()
 
-//Routes
 app.post('/register', async (req: Request,res: Response) => {
     const { username, password } = req?.body;
     if (!username || !password || typeof username !== "string" || typeof password !== "string" ) {
@@ -100,6 +75,25 @@ app.post("/deleteuser", isAdministratorMiddleware, async (req, res) => {
     
 })
 
+// app.get("/getallusers",isAdministratorMiddleware, async (req, res) => {
+//      await User.find({}, (err, data : DatabaseUserInterface[]) => {
+//         if (!err) {
+//             const filteredUsers : UserInterface = [];
+//         data.forEach((item : DatabaseUserInterface) => {
+//             const userInformation = {
+//                 id: item._id,
+//                 username: item.username,
+//                 isAdmin: item.isAdmin
+//             }
+//             filteredUsers.push(userInformation)
+//         });
+//         res.send(filteredUsers);
+//         } else{
+//         throw err;
+//     }
+        
+//     }).clone().catch(function(err){ console.log(err)})
+// })
 
 app.get("/getallusers", isAdministratorMiddleware, async (req, res) => {
     await User.find({}, (err, data: DatabaseUserInterface[]) => {
@@ -117,21 +111,4 @@ app.get("/getallusers", isAdministratorMiddleware, async (req, res) => {
     }).clone().catch(function(err){ console.log(err)})
   });
 
-
-
-// *********************************
-//mongodb+srv://quytodo:08100810@todoapp.dxoug.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-mongoose.connect(
-    `${process.env.MONGO_URI}`,
-    //`${process.env.PART1STRING}${process.env.USERNAME}:${process.env.PASSWORD}${process.env.PART2STRING}`,
-    {
- 
-    }
-).then(() => console.log("MongoDB sucessfully connected!")).catch(err => console.log(err));
-
-const port = process.env.PORT || 5000; // process.env.port is Heroku's port
-app.listen(port, () => console.log(`Server up and running on port ${port}`));
-
-function item(item: any, arg1: (any: any) => void) {
-    throw new Error('Function not implemented.');
-}
+  export default app;
