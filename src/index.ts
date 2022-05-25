@@ -136,15 +136,19 @@ app.get("/getallusers", isAdministratorMiddleware, async (req, res) => {
       });
 
       todo.save();
-      res.send("addTask successfully")
+      res.send("add task successfully")
     //   res.send(todo)
   })
 
   app.delete('/todo/:id', async (req, res) => {
       const result = await Todo.findByIdAndDelete(req.params.id);
-
-      res.send(result);
+    // Todo.findByIdAndDelete(req.params.id);
+      
+    //   res.send(result);
+      res.send("delete task successfully")
   })
+
+
 
   app.put('/todo/:id', async(req, res) => {
       const todo = await Todo.findById(req.params.id);
