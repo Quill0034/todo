@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 
 import User from './Model/User';
+import Todo from './Model/Todo';
 import dotenv from 'dotenv';
 import { DatabaseUserInterface, UserInterface } from './Interfaces/UserInterface';
 // import UserRoute from './routes/UserRoute'
@@ -118,7 +119,51 @@ app.get("/getallusers", isAdministratorMiddleware, async (req, res) => {
   });
 
 
+  //Todo route
+  const success = (res: Response, payload: any) => {
+    return res.status(200).json(payload)
+  }
 
+  app.get('/todos', async (req, res) => {
+      const todos = await Todo.find();
+
+      res.send(todos);
+  })
+
+  app.post('/todo', (req, res) => {
+      const todo = new Todo({
+          task: req.body.task
+      });
+
+      todo.save();
+      res.send("addTask successfully")
+    //   res.send(todo)
+  })
+
+  app.delete('/todo/:id', async (req, res) => {
+      const result = await Todo.findByIdAndDelete(req.params.id);
+
+      res.send(result);
+  })
+
+  app.put('/todo/:id', async(req, res) => {
+      const todo = await Todo.findById(req.params.id);
+
+      todo.complete = !todo.complete
+      todo.save();
+      res.send(todo)
+  })
+
+// app.put("/todo/:id", async (req : Request, res : Response, next : NextFunction) => {
+//     try {
+//       const todo = await Todo.findByIdAndUpdate(req.params.id, req.body, {
+//         new: true,
+//       })
+//       return success(res, todo)
+//     } catch (err) {
+//       next({ status: 400, message: "failed to update todo" })
+//     }
+//   })
 // *********************************
 //mongodb+srv://quytodo:08100810@todoapp.dxoug.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 mongoose.connect(
