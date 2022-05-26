@@ -194,7 +194,7 @@ mongoose.connect(
 //       });
 //     }
 
-    if (process.env.NODE_ENV) {
+    if (!process.env.NODE_ENV) {
 // // ... other app.use middleware 
 app.use(express.static(path.join(__dirname, "client", "build")))
 
