@@ -120,15 +120,19 @@ app.get("/getallusers", isAdministratorMiddleware, async (req, res) => {
 
 
   //Todo route
-  const success = (res: Response, payload: any) => {
-    return res.status(200).json(payload)
-  }
+  
 
   app.get('/todos', async (req, res) => {
-      const todos = await Todo.find();
+      const todos = await Todo.find({'complete': false});
 
       res.send(todos);
   })
+
+  app.get('/done', async (req, res) => {
+    const done = await Todo.find({'complete': true});
+
+    res.send(done);
+})
 
   app.post('/todo', (req, res) => {
       const todo = new Todo({
@@ -155,19 +159,13 @@ app.get("/getallusers", isAdministratorMiddleware, async (req, res) => {
 
       todo.complete = !todo.complete
       todo.save();
-      res.send(todo)
+    //   res.send(todo)
+    res.send("task completed");
   })
 
-// app.put("/todo/:id", async (req : Request, res : Response, next : NextFunction) => {
-//     try {
-//       const todo = await Todo.findByIdAndUpdate(req.params.id, req.body, {
-//         new: true,
-//       })
-//       return success(res, todo)
-//     } catch (err) {
-//       next({ status: 400, message: "failed to update todo" })
-//     }
-//   })
+
+
+  
 // *********************************
 //mongodb+srv://quytodo:08100810@todoapp.dxoug.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 mongoose.connect(
