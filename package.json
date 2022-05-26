@@ -2,11 +2,15 @@
   "name": "survey-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start" : "nodemon --exec ts-node src/index.ts"
+    "start" : "nodemon --exec ts-node index.ts",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
   },
+  "engines": {
+    "node": "17.3.0"
+},
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -20,6 +24,7 @@
     "passport": "^0.5.2",
     "passport-local": "^1.0.0"
   },
+  
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/cookie-parser": "^1.4.2",

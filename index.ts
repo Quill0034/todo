@@ -1,13 +1,15 @@
 import mongoose from 'mongoose';
 import express, {NextFunction, Request, Response} from 'express';
 import cors from 'cors';
-import PassportConfig from './config/PassportConfig';
+import PassportConfig from './src/config/PassportConfig';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 
-import User from './Model/User';
-import Todo from './Model/Todo';
+import path from 'path'
+
+import User from './src/config/Model/User';
+import Todo from './src/config/Model/Todo';
 import dotenv from 'dotenv';
 import { DatabaseUserInterface, UserInterface } from './Interfaces/UserInterface';
 // import UserRoute from './routes/UserRoute'
@@ -165,6 +167,9 @@ app.get("/getallusers", isAdministratorMiddleware, async (req, res) => {
 
 
 
+// ... other app.use middleware 
+app.use(express.static(path.join(__dirname, "client", "build")))
+
   
 // *********************************
 //mongodb+srv://quytodo:08100810@todoapp.dxoug.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
@@ -177,7 +182,17 @@ mongoose.connect(
 ).then(() => console.log("MongoDB sucessfully connected!")).catch(err => console.log(err));
 
 const port = process.env.PORT || 5000; // process.env.port is Heroku's port
+
+// Right before your app.listen(), add this:
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
+
 app.listen(port, () => console.log(`Server up and running on port ${port}`));
+
+
+
+
 
 function item(item: any, arg1: (any: any) => void) {
     throw new Error('Function not implemented.');

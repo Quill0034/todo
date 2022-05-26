@@ -3,10 +3,10 @@ import bcrypt from 'bcryptjs';
 import passport from 'passport';
 
 
-import User from '../Model/User'
+import User from '../src/config/Model/User'
 
 
-import { DatabaseUserInterface, UserInterface } from 'src/Interfaces/UserInterface';
+import { DatabaseUserInterface, UserInterface } from 'Interfaces/UserInterface';
 
 const app = express()
 
