@@ -184,7 +184,7 @@ mongoose.connect(
     }
 ).then(() => console.log("MongoDB sucessfully connected!")).catch(err => console.log(err));
 
-// const port = process.env.PORT || 5000; // process.env.port is Heroku's port
+
 
 // if (process.env.NODE_ENV) {
 //     //static folder add
@@ -204,7 +204,9 @@ app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 });
     }
-app.listen(process.env.PORT || 5000, () => console.log(`Server up and running on port ${process.env.PORT || 5000}`));
+
+const port = process.env.PORT || 5000; // process.env.port is Heroku's port
+app.listen(port, () => console.log(`Server up and running on port ${port}`));
 
 
 
