@@ -186,24 +186,24 @@ mongoose.connect(
 
 // const port = process.env.PORT || 5000; // process.env.port is Heroku's port
 
-if (process.env.NODE_ENV) {
-    //static folder add
-     app.use(express.static('app/client/build'));
-     app.get("*", function (req, res) {
-     res.sendFile(path.resolve(__dirname , "app/client/build", "index.html"));
-      });
-    }
+// if (process.env.NODE_ENV) {
+//     //static folder add
+//      app.use(express.static('app/client/build'));
+//      app.get("*", function (req, res) {
+//      res.sendFile(path.resolve(__dirname , "app/client/build", "index.html"));
+//       });
+//     }
 
-
+    if (process.env.NODE_ENV) {
 // // ... other app.use middleware 
-// app.use(express.static(path.join(__dirname, "client", "build")))
+app.use(express.static(path.join(__dirname, "client", "build")))
 
 
 // // Right before your app.listen(), add this:
-// app.get("*", (req, res) => {
-//     res.sendFile(path.join(__dirname, "client", "build", "index.html"));
-// });
-
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
+    }
 app.listen(process.env.PORT || 5000, () => console.log(`Server up and running on port ${process.env.PORT || 5000}`));
 
 
