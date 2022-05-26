@@ -167,18 +167,7 @@ app.get("/getallusers", isAdministratorMiddleware, async (req, res) => {
 
 
   
-// ... other app.use middleware 
-// app.use(express.static(path.join(__dirname, "client" "build")))
 
-
-if (process.env.NODE_ENV === "production") {
-    // Serve any static files
-    app.use(express.static(path.join(__dirname, "client/build")));
-    // Handle React routing, return all requests to React app
-    app.get("*", function (req, res) {
-      res.sendFile(path.join(__dirname, "client/build", "index.html"));
-    });
-  }
 //   app.use((req, res, next) => {
 //     const error = new Error("Not found");
 //     error.status = 404;
@@ -197,7 +186,20 @@ mongoose.connect(
 
 const port = process.env.PORT || 5000; // process.env.port is Heroku's port
 
-// Right before your app.listen(), add this:
+if (process.env.NODE_ENV) {
+    //static folder add
+     app.use(express.static('app/client/build'));
+     app.get("*", function (req, res) {
+     res.sendFile(path.resolve(__dirname , "app/client/build", "index.html"));
+      });
+    }
+
+
+// // ... other app.use middleware 
+// app.use(express.static(path.join(__dirname, "client", "build")))
+
+
+// // Right before your app.listen(), add this:
 // app.get("*", (req, res) => {
 //     res.sendFile(path.join(__dirname, "client", "build", "index.html"));
 // });
