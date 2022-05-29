@@ -28,7 +28,7 @@ export default function Homepage() {
     withCredentials: true
    }).then((res : AxiosResponse) => {
       if (res.data === "success") {
-        window.location.href = "/"
+        window.location.href = "/welcome"
       }
     }, () => {
       console.log("Failure")
@@ -60,7 +60,7 @@ export default function Homepage() {
             fullWidth
             id="username"
             label="username"
-            
+
             autoComplete = "off"
             autoFocus
             onChange={e => setUsername(e.target.value) }
@@ -98,7 +98,7 @@ export default function Homepage() {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/Register" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>

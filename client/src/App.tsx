@@ -7,6 +7,7 @@ import AdminPage from './Pages/AdminPage';
 import Login from './Pages/Login';
 import Profile from './Pages/Profile';
 import Register from './Pages/Register';
+import Welcome from './Pages/Welcome';
 
 import Tasks from './Pages/Tasks';
 
@@ -27,7 +28,8 @@ const ctx = useContext(myContext);
       {ctx ? <NavBar /> : null}
       
       <Routes>
-      <Route path='/' element={<Homepage/>}/>   
+      <Route path='/' element={<Homepage/>}/>  
+      <Route path='/welcome' element={<Welcome/>}/>  
         {
           ctx ? (
             <>
@@ -38,6 +40,7 @@ const ctx = useContext(myContext);
             </>
           ) : (
             <>
+            
             <Route path='/login' element={<Login/>}/>
             <Route path='/register'  element={<Register/>}/>
             

@@ -30,18 +30,12 @@ export default function Register() {
     withCredentials: true
    }).then((res : AxiosResponse) => {
       if (res.data === "success") {
+        window.alert("Account created successfully!")
         window.location.href = "/"
       }
     })
   }
 
-  // const getUser = () => {
-  //   axios.get("http://localhost:5000/user", {
-  //     withCredentials: true
-  //   }).then(res => {
-  //     console.log(res.data);
-  //   })
-  // }
 
   return (
     <>
@@ -62,14 +56,13 @@ export default function Register() {
           <Typography component="h1" variant="h5">
             Register
           </Typography>
-          <Box component="form" onSubmit={register} noValidate sx={{ mt: 1 }}>
+          <Box component="form" noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
               fullWidth
-              id="username"
               label="username"
-              name="username"
+
 
               autoFocus
               onChange={e => setUsername(e.target.value)} />
@@ -77,20 +70,19 @@ export default function Register() {
               margin="normal"
               required
               fullWidth
-              name="password"
+
               label="Password"
               type="password"
-              id="password"
+
 
               onChange={e => setPassword(e.target.value)} />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me" />
+           
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              onClick = {register}
             >
               Register
             </Button>
