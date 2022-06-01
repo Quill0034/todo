@@ -26,7 +26,13 @@ export default function Homepage() {
         }}
       >
         <Typography component="h1" variant="h5">
-         Using this app, you do not need another To-do list application
+         Live every moment
+        </Typography>
+        <Typography component="h1" variant="h5">
+         Laugh everyday
+        </Typography>
+        <Typography component="h1" variant="h5">
+         Love beyond words
         </Typography>
           
           

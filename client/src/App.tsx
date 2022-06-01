@@ -8,7 +8,7 @@ import Login from './Pages/Login';
 import Profile from './Pages/Profile';
 import Register from './Pages/Register';
 import Welcome from './Pages/Welcome';
-
+import ForgotPassword from './Pages/ForgotPassword';
 import Tasks from './Pages/Tasks';
 
 import "./main.css";
@@ -21,6 +21,7 @@ import { myContext } from './Pages/Context';
 function App() {
 const ctx = useContext(myContext);
 
+
   return (
     <div >
       <BrowserRouter>
@@ -28,8 +29,10 @@ const ctx = useContext(myContext);
       {ctx ? <NavBar /> : null}
       
       <Routes>
-      <Route path='/' element={<Homepage/>}/>  
+        
+      
       <Route path='/welcome' element={<Welcome/>}/>  
+      <Route path='/forgotPassword' element={<ForgotPassword/>}/>  
         {
           ctx ? (
             <>
@@ -43,7 +46,7 @@ const ctx = useContext(myContext);
             
             <Route path='/login' element={<Login/>}/>
             <Route path='/register'  element={<Register/>}/>
-            
+            <Route path='/' element={<Homepage/>}/>  
             </>
             )
           }
