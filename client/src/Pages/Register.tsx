@@ -54,27 +54,25 @@ export default function Register() {
           <Typography component="h1" variant="h5">
             Register
           </Typography>
-          <Box component="form" noValidate sx={{ mt: 1 }}>
+          
             <TextField
               margin="normal"
               required
               fullWidth
+              id="username"
               label="username"
-
-
               autoFocus
+              autoComplete = "off"
               onChange={e => setUsername(e.target.value)} />
             <TextField
               margin="normal"
               required
               fullWidth
-
               label="Password"
               type="password"
-
-
+              autoComplete = "new-password"
+              id="password" 
               onChange={e => setPassword(e.target.value)} />
-           
             <Button
               type="submit"
               fullWidth
@@ -89,7 +87,7 @@ export default function Register() {
                 {"Go back to Sign in"}
               </Link>
             </Grid>
-          </Box>
+          
         </Box>
 
       </Container>

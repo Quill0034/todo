@@ -31,7 +31,7 @@ export default function Homepage() {
         window.location.href = "/welcome"
       }
     }, () => {
-      console.log("Failure")
+
     })
   }
 
@@ -60,7 +60,6 @@ export default function Homepage() {
             fullWidth
             id="username"
             label="username"
-
             autoComplete = "off"
             autoFocus
             onChange={e => setUsername(e.target.value) }
@@ -68,13 +67,11 @@ export default function Homepage() {
           <TextField
             margin="normal"
             required
-            fullWidth
-            
+            fullWidth   
             label="Password"
             type="password"
             autoComplete = "new-password"
-            id="password"
-          
+            id="password"     
             onChange={e => setPassword(e.target.value) }
           />
           {/* <FormControlLabel

@@ -9,12 +9,14 @@ import session from 'express-session';
 import path from 'path'
 
 import User from './src/config/Model/User';
-import Todo from './src/config/Model/Todo';
+
 import dotenv from 'dotenv';
 import { DatabaseUserInterface, UserInterface } from './Interfaces/UserInterface';
 // import UserRoute from './routes/UserRoute'
 import bcrypt from 'bcryptjs';
 dotenv.config()
+
+import TodoModel from './src/config/Model/Todo';
 
 
 
@@ -123,47 +125,39 @@ app.get("/getallusers", isAdministratorMiddleware, async (req, res) => {
 
   //Todo route
   
-
-  app.get('/todos', async (req, res) => {
-      const todos = await Todo.find({'complete': false});
-
-      res.send(todos);
-  })
-
-  app.get('/done', async (req, res) => {
-    const done = await Todo.find({'complete': true});
-
-    res.send(done);
+app.get('/todos', async (req,res) => {
+     const Todo = await TodoModel.find();
+    res.send(Todo);
 })
 
-  app.post('/todo', (req, res) => {
-      const todo = new Todo({
-          task: req.body.task
-      });
+app.post('/addTodo', async (req, res) => {
+    const { text } = req.body;
 
-      todo.save();
-      res.send("add task successfully")
-    //   res.send(todo)
+    TodoModel
+    .create({text})
+    .then(() => res.send("Added Successfully..."))
+    .catch((err) => console.log(err))
+})
+
+  app.post('/deleteTodo', async (req,res) => {
+    const {_id} = req.body;
+
+    TodoModel
+    .findByIdAndDelete(_id)
+    .then(() => res.send("Deleted Successfully..."))
+    .catch((err) => console.log(err))
   })
 
-  app.delete('/todo/:id', async (req, res) => {
-      const result = await Todo.findByIdAndDelete(req.params.id);
-    // Todo.findByIdAndDelete(req.params.id);
-      
-    //   res.send(result);
-      res.send("delete task successfully")
+  app.post('/updateTodo', async (req, res) => {
+    const {_id, text} = req.body;
+
+    TodoModel
+    .findByIdAndUpdate(_id, {text})
+    .then(() => res.send("Updated Successfully..."))
+    .catch((err) => console.log(err))
   })
 
 
-
-  app.put('/todo/:id', async(req, res) => {
-      const todo = await Todo.findById(req.params.id);
-
-      todo.complete = !todo.complete
-      todo.save();
-    //   res.send(todo)
-    res.send("task completed");
-  })
 
 
   

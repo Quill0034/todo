@@ -9,16 +9,14 @@ import { Delete } from "@material-ui/icons";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 
-import ListItemButton from '@mui/material/ListItemButton';
-import Collapse from '@mui/material/Collapse';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
+
+import Item from './Item';
+
 
 export default function Tasks() {
-  const [todos, setTodos] = useState([])
-  const [done, setDone] = useState([])
-  const [task, setTask] = useState("")
-  const [open, setOpen] = useState(false);
+  const [text, setText] = useState("");
+  const [todo, setTodo] = useState([]);
+  const [isUpdating, setUpdating] = useState("")
 
   const styles = {
     Paper: {
@@ -47,109 +45,67 @@ export default function Tasks() {
   };
 
   useEffect(() => {
-    axios.get("/todos", {withCredentials: true}).then((res ) => {
-      setTodos(res.data);
-    })
-  }, []
- )
- 
-  useEffect(() => {
-    axios.get("/done", {withCredentials: true}).then((res ) => {
-      setDone(res.data);
-    })
-  }, [])
+    axios.get("/todos")
+    .then((res) => setTodo(res.data))
+    .catch((err) => console.log(err))
+  },[todo])
 
-  const  addTask = () => {
-    axios.post("/todo", {
-      task,
-    }, {
-      withCredentials: true
-    }).then((res) => {
-      if (res.data === "add task successfully"){
-        window.location.reload();
-      }
-    }, () => {
-      console.log("failure")
-    })
+  const addTodo = (event) => {
+    event.preventDefault();
+    if (isUpdating === "") {
+      axios.post("/addTodo", {text})
+      .then((res) => {
+
+        setText("");
+      })
+      .catch((err) => console.log(err))
+    }else{
+      axios.post("/updateTodo", {_id: isUpdating, text})
+      .then((res) => {
+   
+        setText("");
+        setUpdating("");
+      })
+      .catch((err) => console.log(err))
+    }
   }
 
+  const deleteTodo = (_id) => {
+    axios.post("/deleteTodo", {_id})
+    .then((res) => {
 
-  // }
-
-  const deleteTask = (b) => {
-    axios.delete(`/todo/${b}`).then ((res) => {
-      if (res.data === "delete task successfully") {
-        window.location.reload();
-      }
     })
+    .catch((err) => console.log(err))
   }
 
-  const completeTask = (b) => {
-    axios.put(`/todo/${b}`).then ((res) => {
-      window.location.reload();
-    })
+  const updateTodo = (_id, text) => {
+    setUpdating(_id);
+    // setText(text);
   }
-
-  const handleOpen = () => {
-    setOpen(!open);
-  };
-
-
+  
   return (
-    <div className="App">
-      <div> 
-      <Paper style={styles.Paper}>
-        <form onSubmit={addTask}>
-          <input
-            type ="text"
-            placeholder ="Your task here"
-            onChange = {e => setTask(e.target.value)}>
-          </input>
-          <button type="submit">Add</button>
-        </form>
-        </Paper>    
+    <div className="Todo">
+      <div>
+        <Paper style={styles.Paper}> 
+        <form onSubmit={addTodo}>
+            <input 
+            type= "text"
+            placeholder="add Task..."
+            value ={text}
+            onChange = {(e) => setText (e.target.value)} />
+            <button type="submit">{isUpdating? "Update": "Add"}</button>
+            </form>
+        </Paper>   
       </div>
 
-      <Box style={styles.Box.sx} >
-        <h1>Tasks need to be done</h1>
-          <List sx={styles.List} component="nav" aria-label="mailbox folders">
-            {todos.map(({ _id, task, complete}, i) => (
-              <ListItem
-                key={i}
-                divider
-              >
-                {task} 
-                <Checkbox type='checkbox' style={styles.Checkbox} onClick={() => completeTask(_id)}></Checkbox>
-                  <IconButton  onClick={ () => {if(window.confirm('Delete the item?'))deleteTask(_id)}}><Delete fontSize="small" /></IconButton>      
-              </ListItem>
-            ))}
-        </List>
-      </Box>
-    
-    <Box sx={styles.Box.sx} >
-
-    <ListItemButton onClick={handleOpen} >
-      <h1>Tasks completed</h1> {open ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-          <List style={styles.List}  component="nav" aria-label="mailbox folders" disablePadding>
-            {done.map(({ _id, task, complete}, i) => (
-              <ListItem
-                key={i}
-                sx={{ pl: 4 }}
-                divider
-              >
-                <Grid container item xs={12} style={styles.Paper}>
-                {task} 
-                <Checkbox type='checkbox' style={styles.Checkbox} onClick={() => completeTask(_id)}></Checkbox>
-                  <IconButton  onClick={ () => {if(window.confirm('Delete the item?'))deleteTask(_id)}}><Delete fontSize="small" /></IconButton>   
-                  </Grid>
-              </ListItem>
-            ))}
-          </List>
-          </Collapse>
-    </Box>
-
+      <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+        {todo.map(item => <Item
+        key={item._id} 
+        text={item.text} 
+        remove={() => deleteTodo(item._id)} 
+        update={() => updateTodo(item._id, text.text)} />)}
+      </List>
     </div>
   )
         }
+
