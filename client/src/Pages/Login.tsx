@@ -20,7 +20,8 @@ export default function Homepage() {
   const [username, setUsername] = useState<string>("")
   const [password, setPassword] = useState<string>("")
 
-  const login = () => {
+  const Login = (event: any) => {
+    event.preventDefault();
     axios.post("/login", {
       username,
       password
@@ -53,7 +54,7 @@ export default function Homepage() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        
+        <form onSubmit={Login}>
           <TextField
             margin="normal"
             required
@@ -79,7 +80,7 @@ export default function Homepage() {
             label="Remember me"
           /> */}
           <Button
-            onClick={login}
+            
             type="submit"
             fullWidth
             variant="contained"
@@ -87,7 +88,7 @@ export default function Homepage() {
           >
             Sign In
           </Button>
-          
+          </form>
           <Grid container>
             <Grid item xs>
               <Link href="/forgotPassword" variant="body2">

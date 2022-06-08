@@ -2,18 +2,21 @@ import React, {useState, useEffect} from 'react'
 import axios, { AxiosResponse } from 'axios'
 
 import Box from '@mui/material/Box';
-
 import IconButton from "@material-ui/core/IconButton";
-
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-
 import ListItemText from '@mui/material/ListItemText';
+import FormControl from '@mui/material/FormControl';
+import InputAdornment from '@mui/material/InputAdornment';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
 
 import DeleteIcon from '@mui/icons-material/Delete';
 import CreateIcon from '@mui/icons-material/Create';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import Input from '@mui/material/Input';
 
 export default function Tasks() {
   const [text, setText] = useState("");
@@ -21,19 +24,16 @@ export default function Tasks() {
   const [isUpdating, setUpdating] = useState("")
 
   const styles = {
-    Paper: {
+    Box: {
       padding: 20,
       margin: "auto",
       textAlign: "center",
       width: 500
     },
-    Box: {
-      sx: {
-        marginTop: 8,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }
+    Form: {
+      padding: 20,
+      margin: "auto",
+      width: 500
     },
     List: {
       width: '100%',
@@ -83,9 +83,28 @@ export default function Tasks() {
   
   return (
     <div className="Todo">
-      <div>
-      <Box style={styles.Paper}> 
-        {/* <Paper style={styles.Paper}>  */}
+   
+      
+     
+      <form style={styles.Form} onSubmit={addTodo}>
+      
+          <Input
+          placeholder="Task"
+            type="text"
+            value={text}
+            onChange = {(e) => setText (e.target.value)}
+            endAdornment={ 
+                <IconButton
+                  edge="end" type="submit"
+                >
+                  <AddBoxIcon color="success"/>
+                </IconButton>
+            }
+          />
+        </form>
+        <Box style={styles.Box}> 
+      {/* <Box style={styles.Paper}> 
+
         <form onSubmit={addTodo}>
             <TextField  label="Task"
           size="small" color="success" focused 
@@ -95,11 +114,11 @@ export default function Tasks() {
             
             <Button variant="contained" color="success" type="submit">{isUpdating? "Update": "Add"}</Button>
             </form>
-        {/* </Paper>    */}
-        </Box>
-      </div>
 
-      <Box style={styles.Paper}> 
+        </Box> */}
+    
+
+   
       <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
       {todo.map(({_id, text}, i) => (
         <ListItem
