@@ -6,11 +6,9 @@ import IconButton from "@material-ui/core/IconButton";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import FormControl from '@mui/material/FormControl';
-import InputAdornment from '@mui/material/InputAdornment';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
 
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CreateIcon from '@mui/icons-material/Create';
 import Button from '@mui/material/Button';
@@ -18,10 +16,18 @@ import TextField from '@mui/material/TextField';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import Input from '@mui/material/Input';
 
+import ListItemButton from '@mui/material/ListItemButton';
+import Collapse from '@mui/material/Collapse';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+
 export default function Tasks() {
   const [text, setText] = useState("");
   const [todo, setTodo] = useState([]);
+  const [done, setDone] = useState([]);
   const [isUpdating, setUpdating] = useState("")
+  const [open, setOpen] = useState(false);
+
 
   const styles = {
     Box: {
@@ -47,6 +53,12 @@ export default function Tasks() {
     .then((res) => setTodo(res.data))
     .catch((err) => console.log(err))
   },[todo])
+
+  useEffect(() => {
+    axios.get("/done")
+    .then((res) => setDone(res.data))
+    .catch((err) => console.log(err))
+  },[done])
 
   const addTodo = (event) => {
     event.preventDefault();
@@ -81,6 +93,18 @@ export default function Tasks() {
     // setText(text);
   }
   
+  const completeTodo = (_id, complete) => {
+    axios.put("/completeTodo", {_id, complete})
+    .then((res) => {
+ 
+    })
+    .catch((err) => console.log(err))
+  }
+
+  const handleOpen = () => {
+    setOpen(!open);
+  };
+
   return (
     <div className="Todo">
    
@@ -103,24 +127,11 @@ export default function Tasks() {
           />
         </form>
         <Box style={styles.Box}> 
-      {/* <Box style={styles.Paper}> 
 
-        <form onSubmit={addTodo}>
-            <TextField  label="Task"
-          size="small" color="success" focused 
-            type= "text"
-            value ={text}
-            onChange = {(e) => setText (e.target.value)} />
-            
-            <Button variant="contained" color="success" type="submit">{isUpdating? "Update": "Add"}</Button>
-            </form>
-
-        </Box> */}
-    
-
+    <h1 style={{textAlign:"left"}}> Tasks need to be done</h1>
    
       <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      {todo.map(({_id, text}, i) => (
+      {todo.map(({_id, text, complete}, i) => (
         <ListItem
           key={i}
           divider
@@ -129,6 +140,7 @@ export default function Tasks() {
             <>    
               <IconButton  onClick={() => {if(window.confirm('Delete the item?'))deleteTodo(_id)}}> <DeleteIcon fontSize="small" /> </IconButton>
               <IconButton  onClick={() => updateTodo(_id, text)}> <CreateIcon fontSize="small" /> </IconButton>
+              <IconButton  onClick={() => completeTodo(_id, complete)}> <RadioButtonUncheckedIcon fontSize="small" /> </IconButton>
             </>
           }
         >
@@ -137,6 +149,38 @@ export default function Tasks() {
       ))}
     </List>
     </Box>
+
+    <Box style={styles.Box}> 
+    <div style={{textAlign:"left"}}>
+    <ListItemButton  onClick={handleOpen} >
+      <h1 >Tasks completed</h1> {open ? <ExpandLess /> : <ExpandMore />}
+      </ListItemButton>
+      </div>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+      <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+      {done.map(({_id, text, complete}, i) => (
+        <ListItem
+          key={i}
+          divider
+          disableGutters
+          secondaryAction={
+            <>    
+              
+              <IconButton  onClick={() => {if(window.confirm('Delete the item?'))deleteTodo(_id)}}> <DeleteIcon fontSize="small" /> </IconButton>
+              <IconButton  onClick={() => updateTodo(_id, text)}> <CreateIcon fontSize="small" /> </IconButton>
+              <IconButton  onClick={() => completeTodo(_id, complete)}> <CheckCircleIcon fontSize="small" /> </IconButton>
+            </>
+          }
+        >
+          <ListItemText primary={text} />
+        </ListItem>
+      ))}
+    </List>
+    </Collapse>
+    </Box>
+
+
+
     </div>
   )
         }

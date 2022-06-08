@@ -126,8 +126,13 @@ app.get("/getallusers", isAdministratorMiddleware, async (req, res) => {
   //Todo route
   
 app.get('/todos', async (req,res) => {
-     const Todo = await TodoModel.find();
+     const Todo = await TodoModel.find({'complete': false});
     res.send(Todo);
+})
+
+app.get('/done', async (req,res) => {
+    const Done = await TodoModel.find({'complete': true});
+   res.send(Done);
 })
 
 app.post('/addTodo', async (req, res) => {
@@ -156,6 +161,18 @@ app.post('/addTodo', async (req, res) => {
     .then(() => res.send("Updated Successfully..."))
     .catch((err) => console.log(err))
   })
+
+
+ app.put('/completeTodo', async(req, res) => {
+    const {_id} = req.body;
+    const todo = await TodoModel.findById(_id);
+     
+       todo.complete = !todo.complete
+    todo.save();
+    //   res.send(todo)
+      res.send("Updated Successfully!");
+     })
+
 
 
 
