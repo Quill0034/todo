@@ -1,17 +1,19 @@
 import React, {useState, useEffect} from 'react'
 import axios, { AxiosResponse } from 'axios'
 
-import { Paper, Grid, } from "@material-ui/core";
 import Box from '@mui/material/Box';
-import Checkbox from '@mui/material/Checkbox';
+
 import IconButton from "@material-ui/core/IconButton";
-import { Delete } from "@material-ui/icons";
+
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 
+import ListItemText from '@mui/material/ListItemText';
 
-import Item from './Item';
-
+import DeleteIcon from '@mui/icons-material/Delete';
+import CreateIcon from '@mui/icons-material/Create';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
 export default function Tasks() {
   const [text, setText] = useState("");
@@ -32,10 +34,6 @@ export default function Tasks() {
         flexDirection: 'column',
         alignItems: 'center',
       }
-    },
-    Checkbox: {
-      marginLeft: "auto",
-      width: "10%"
     },
     List: {
       width: '100%',
@@ -86,25 +84,40 @@ export default function Tasks() {
   return (
     <div className="Todo">
       <div>
-        <Paper style={styles.Paper}> 
+      <Box style={styles.Paper}> 
+        {/* <Paper style={styles.Paper}>  */}
         <form onSubmit={addTodo}>
-            <input 
+            <TextField  label="Task"
+          size="small" color="success" focused 
             type= "text"
-            placeholder="add Task..."
             value ={text}
             onChange = {(e) => setText (e.target.value)} />
-            <button type="submit">{isUpdating? "Update": "Add"}</button>
+            
+            <Button variant="contained" color="success" type="submit">{isUpdating? "Update": "Add"}</Button>
             </form>
-        </Paper>   
+        {/* </Paper>    */}
+        </Box>
       </div>
 
+      <Box style={styles.Paper}> 
       <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-        {todo.map(item => <Item
-        key={item._id} 
-        text={item.text} 
-        remove={() => deleteTodo(item._id)} 
-        update={() => updateTodo(item._id, text.text)} />)}
-      </List>
+      {todo.map(({_id, text}, i) => (
+        <ListItem
+          key={i}
+          divider
+          disableGutters
+          secondaryAction={
+            <>    
+              <IconButton  onClick={() => {if(window.confirm('Delete the item?'))deleteTodo(_id)}}> <DeleteIcon fontSize="small" /> </IconButton>
+              <IconButton  onClick={() => updateTodo(_id, text)}> <CreateIcon fontSize="small" /> </IconButton>
+            </>
+          }
+        >
+          <ListItemText primary={text} />
+        </ListItem>
+      ))}
+    </List>
+    </Box>
     </div>
   )
         }
