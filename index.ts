@@ -18,8 +18,6 @@ dotenv.config()
 
 import TodoModel from './src/config/Model/Todo';
 
-
-
 // Middleware
 const app = express();
 
@@ -176,17 +174,8 @@ app.post('/addTodo', async (req, res) => {
 
 
 
-
-  
-
-//   app.use((req, res, next) => {
-//     const error = new Error("Not found");
-//     error.status = 404;
-//     next(error);
-//   });
   
 // *********************************
-//mongodb+srv://quytodo:08100810@todoapp.dxoug.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 mongoose.connect(
     `${process.env.MONGO_URI}`,
     //`${process.env.PART1STRING}${process.env.USERNAME}:${process.env.PASSWORD}${process.env.PART2STRING}`,
@@ -194,17 +183,6 @@ mongoose.connect(
  
     }
 ).then(() => console.log("MongoDB sucessfully connected!")).catch(err => console.log(err));
-
-
-
-// if (process.env.NODE_ENV) {
-//     //static folder add
-//      app.use(express.static('app/client/build'));
-//      app.get("*", function (req, res) {
-//      res.sendFile(path.resolve(__dirname , "app/client/build", "index.html"));
-//       });
-//     }
-
  
 // // ... other app.use middleware 
 app.use(express.static(path.join(__dirname, "client", "build")))
@@ -221,8 +199,3 @@ app.listen(port, () => console.log(`Server up and running on port ${port}`));
 
 
 
-
-
-function item(item: any, arg1: (any: any) => void) {
-    throw new Error('Function not implemented.');
-}

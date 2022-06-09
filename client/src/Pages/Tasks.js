@@ -21,13 +21,28 @@ import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
 export default function Tasks() {
   const [text, setText] = useState("");
   const [todo, setTodo] = useState([]);
   const [done, setDone] = useState([]);
   const [isUpdating, setUpdating] = useState("")
   const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = React.useState(false);
 
+  const handleClickOpenEdit = (_id) => {
+    setOpenEdit(true);
+    setUpdating(_id);
+  };
+
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
+  };
 
   const styles = {
     Box: {
@@ -75,6 +90,7 @@ export default function Tasks() {
    
         setText("");
         setUpdating("");
+        setOpenEdit(false);
       })
       .catch((err) => console.log(err))
     }
@@ -88,10 +104,10 @@ export default function Tasks() {
     .catch((err) => console.log(err))
   }
 
-  const updateTodo = (_id, text) => {
-    setUpdating(_id);
-    // setText(text);
-  }
+  // const updateTodo = (_id, text) => {
+  //   setUpdating(_id);
+  //   // setText(text);
+  // }
   
   const completeTodo = (_id, complete) => {
     axios.put("/completeTodo", {_id, complete})
@@ -106,12 +122,8 @@ export default function Tasks() {
   };
 
   return (
-    <div className="Todo">
-   
-      
-     
+    <div className="Todo">     
       <form style={styles.Form} onSubmit={addTodo}>
-      
           <Input
           placeholder="Task"
             type="text"
@@ -124,10 +136,39 @@ export default function Tasks() {
                   <AddBoxIcon color="success"/>
                 </IconButton>
             }
+            autoFocus = {true}
           />
         </form>
-        <Box style={styles.Box}> 
-
+        <Box style={styles.Box}>    
+      <Dialog open={openEdit} onClose={handleCloseEdit}>
+        <DialogTitle>Edit</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Edit the task:
+          </DialogContentText>
+          <form style={styles.Form} onSubmit={addTodo}>
+          <Input
+          placeholder="Task"
+            type="text"
+            value={text}
+            onChange = {(e) => setText (e.target.value)}
+            endAdornment={ 
+                <IconButton
+                  edge="end" type="submit"
+                >
+                  <CreateIcon color="success"/>
+                </IconButton>
+            }
+            autoFocus = {true}
+          />
+        </form>
+        </DialogContent>
+        {/* <DialogActions>
+          <Button onClick={handleCloseEdit}>Cancel</Button>
+          <Button onClick={handleCloseEdit}>Subscribe</Button>
+        </DialogActions> */}
+      </Dialog>
+    
     <h1 style={{textAlign:"left"}}> Tasks need to be done</h1>
    
       <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
@@ -139,7 +180,7 @@ export default function Tasks() {
           secondaryAction={
             <>    
               <IconButton  onClick={() => {if(window.confirm('Delete the item?'))deleteTodo(_id)}}> <DeleteIcon fontSize="small" /> </IconButton>
-              <IconButton  onClick={() => updateTodo(_id, text)}> <CreateIcon fontSize="small" /> </IconButton>
+              <IconButton  onClick={() => handleClickOpenEdit(_id, text)}> <CreateIcon fontSize="small" /> </IconButton>
               <IconButton  onClick={() => completeTodo(_id, complete)}> <RadioButtonUncheckedIcon fontSize="small" /> </IconButton>
             </>
           }
@@ -167,7 +208,7 @@ export default function Tasks() {
             <>    
               
               <IconButton  onClick={() => {if(window.confirm('Delete the item?'))deleteTodo(_id)}}> <DeleteIcon fontSize="small" /> </IconButton>
-              <IconButton  onClick={() => updateTodo(_id, text)}> <CreateIcon fontSize="small" /> </IconButton>
+              <IconButton  onClick={() => handleClickOpenEdit(_id, text)}> <CreateIcon fontSize="small" /> </IconButton>
               <IconButton  onClick={() => completeTodo(_id, complete)}> <CheckCircleIcon fontSize="small" /> </IconButton>
             </>
           }
