@@ -125,7 +125,7 @@ export default function Tasks() {
     <div className="Todo">     
       <form style={styles.Form} onSubmit={addTodo}>
           <Input
-          placeholder="Task"
+          placeholder="What need to be done?"
             type="text"
             value={text}
             onChange = {(e) => setText (e.target.value)}
@@ -143,30 +143,24 @@ export default function Tasks() {
       <Dialog open={openEdit} onClose={handleCloseEdit}>
         <DialogTitle>Edit</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Edit the task:
-          </DialogContentText>
           <form style={styles.Form} onSubmit={addTodo}>
           <Input
-          placeholder="Task"
             type="text"
             value={text}
             onChange = {(e) => setText (e.target.value)}
-            endAdornment={ 
-                <IconButton
-                  edge="end" type="submit"
-                >
-                  <CreateIcon color="success"/>
-                </IconButton>
-            }
+            // endAdornment={ 
+            //     <IconButton edge="end" type="submit">
+            //       <CreateIcon color="success"/>
+            //     </IconButton>
+            // }
             autoFocus = {true}
           />
         </form>
         </DialogContent>
-        {/* <DialogActions>
-          <Button onClick={handleCloseEdit}>Cancel</Button>
-          <Button onClick={handleCloseEdit}>Subscribe</Button>
-        </DialogActions> */}
+        <DialogActions>
+          <Button onClick={handleCloseEdit} color="primary">Cancel</Button>
+          <Button onClick={addTodo} color="success">OK</Button>
+        </DialogActions>
       </Dialog>
     
     <h1 style={{textAlign:"left"}}> Tasks need to be done</h1>
