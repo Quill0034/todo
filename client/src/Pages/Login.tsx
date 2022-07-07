@@ -14,7 +14,9 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { createTheme, Paper, ThemeProvider } from '@mui/material';
 
+const theme = createTheme();
 
 export default function Homepage() {
   const [username, setUsername] = useState<string>("")
@@ -37,9 +39,24 @@ export default function Homepage() {
   }
 
    return (
-    
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
+    <ThemeProvider theme={theme}>
+      <Grid container component="main" sx={{ height: '100vh' }}>
+        <CssBaseline />
+        <Grid
+          item
+          xs={false}
+          sm={4}
+          md={7}
+          sx={{
+            backgroundImage: 'url(https://source.unsplash.com/random)',
+            backgroundRepeat: 'no-repeat',
+            backgroundColor: (t) =>
+              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+     <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
       <Box
         sx={{
           marginTop: 8,
@@ -54,7 +71,7 @@ export default function Homepage() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <form onSubmit={Login}>
+        <Box component="form" noValidate onSubmit={Login} sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
@@ -75,12 +92,7 @@ export default function Homepage() {
             id="password"     
             onChange={e => setPassword(e.target.value) }
           />
-          {/* <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          /> */}
           <Button
-            
             type="submit"
             fullWidth
             variant="contained"
@@ -88,7 +100,7 @@ export default function Homepage() {
           >
             Sign In
           </Button>
-          </form>
+ 
           <Grid container>
             <Grid item xs>
               <Link href="/forgotPassword" variant="body2">
@@ -102,9 +114,12 @@ export default function Homepage() {
             </Grid>
           </Grid>
         </Box>
-     
+     </Box>
  
-    </Container>
+        </Grid>
+    </Grid>
+    </ThemeProvider>
+    
    )
     // eslint-disable-next-line no-lone-blocks
     {/* <div>

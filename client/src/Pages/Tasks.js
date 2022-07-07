@@ -200,7 +200,6 @@ export default function Tasks() {
           disableGutters
           secondaryAction={
             <>    
-              
               <IconButton  onClick={() => {if(window.confirm('Delete the item?'))deleteTodo(_id)}}> <DeleteIcon fontSize="small" /> </IconButton>
               <IconButton  onClick={() => handleClickOpenEdit(_id, text)}> <CreateIcon fontSize="small" /> </IconButton>
               <IconButton  onClick={() => completeTodo(_id, complete)}> <CheckCircleIcon fontSize="small" /> </IconButton>
