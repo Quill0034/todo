@@ -6,7 +6,7 @@ import passport from 'passport';
 import User from '../src/config/Model/User'
 
 
-import { DatabaseUserInterface, UserInterface } from 'Interfaces/UserInterface';
+import { DatabaseUserInterface, UserInterface } from 'Interfaces/Interface';
 
 const app = express()
 

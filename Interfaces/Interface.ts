@@ -10,3 +10,9 @@ export interface DatabaseUserInterface {
     isAdmin: Boolean;
     _id: string;
 }
+
+export interface TaskInterface {
+    text: string;
+    complete: Boolean;
+    _id: string;
+}

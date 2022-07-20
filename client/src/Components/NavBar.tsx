@@ -29,9 +29,6 @@ export default function NavBar() {
     setAnchorElNav(null);
   };
 
-
-
-
   const logout = () => {
     Axios.get("/logout",{
     withCredentials: true
@@ -65,7 +62,6 @@ export default function NavBar() {
           >
             QUY-TODO
           </Typography>
-          
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
           <IconButton
               size="large"
@@ -98,7 +94,6 @@ export default function NavBar() {
                <MenuItem onClick={handleCloseNavMenu}>
                 <Link component={RouterLink} onClick={logout} underline="none" textAlign="center" to="/">Logout </Link>
                 </MenuItem>
-
                 {ctx.isAdmin ? (
                 <MenuItem onClick={handleCloseNavMenu}>
                   <Link component={RouterLink} underline="none"  to="/admin">Admin</Link> </MenuItem>

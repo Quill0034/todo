@@ -13,7 +13,6 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {createTheme, ThemeProvider } from '@mui/material/styles';
 
-
 const theme = createTheme();
 
 export default function Register() {
@@ -33,8 +32,6 @@ export default function Register() {
       }
     })
   }
-
-
   return (
     <>
     <ThemeProvider theme={theme}>
@@ -54,7 +51,6 @@ export default function Register() {
           <Typography component="h1" variant="h5">
             Register
           </Typography>
-          
             <TextField
               margin="normal"
               required
@@ -86,23 +82,10 @@ export default function Register() {
               <Link href="/login" variant="body2">
                 {"Go back to Sign in"}
               </Link>
-            </Grid>
-          
+            </Grid>      
         </Box>
-
       </Container>
-
-
     </ThemeProvider>
-    
-      {/* <div>
-          <h1>Register</h1>
-          <input type="text" placeholder='username' onChange={e => setUsername(e.target.value)} />
-          <input type="text" placeholder='password' onChange={e => setPassword(e.target.value)} />
-          <button onClick={register}>Register</button>
-          <button onClick={getUser}>Get User Thats Logged In</button>
-        </div> */}
       </>
-      
   )
 }

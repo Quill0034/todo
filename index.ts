@@ -11,7 +11,8 @@ import path from 'path'
 import User from './src/config/Model/User';
 
 import dotenv from 'dotenv';
-import { DatabaseUserInterface, UserInterface } from './Interfaces/UserInterface';
+import { DatabaseUserInterface, UserInterface, TaskInterface } from './Interfaces/Interface';
+
 // import UserRoute from './routes/UserRoute'
 import bcrypt from 'bcryptjs';
 dotenv.config()
@@ -134,7 +135,7 @@ app.get('/done', async (req,res) => {
 })
 
 app.post('/addTodo', async (req, res) => {
-    const { text } = req.body;
+    const { text } : any = req.body;
 
     TodoModel
     .create({text})
@@ -152,7 +153,7 @@ app.post('/addTodo', async (req, res) => {
   })
 
   app.post('/updateTodo', async (req, res) => {
-    const {_id, text} = req.body;
+    const {_id, text} : TaskInterface = req.body;
 
     TodoModel
     .findByIdAndUpdate(_id, {text})
