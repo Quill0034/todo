@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import passport from 'passport';
 import passportLocal from 'passport-local';
-import User from './Model/User'
+import User from '../Model/User'
 import { DatabaseUserInterface, UserInterface } from 'Interfaces/Interface';
 
 const LocalStrategy = passportLocal.Strategy
