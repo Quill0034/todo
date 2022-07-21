@@ -6,36 +6,35 @@ import IconButton from "@material-ui/core/IconButton";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CreateIcon from '@mui/icons-material/Create';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import Input from '@mui/material/Input';
-
 import ListItemButton from '@mui/material/ListItemButton';
 import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 
-export default function Tasks() {
-  const [text, setText] = useState("");
+const theme = createTheme();
+
+export default function Taolao() {
+  const [text, setText] = useState<string>("")
   const [todo, setTodo] = useState([]);
   const [done, setDone] = useState([]);
-  const [isUpdating, setUpdating] = useState("")
-  const [open, setOpen] = useState(false);
+  const [isUpdating, setUpdating] = useState<string>("")
+  const [open, setOpen] = useState<boolean>(false);
   const [openEdit, setOpenEdit] = React.useState(false);
 
-  const handleClickOpenEdit = (_id) => {
+  const handleClickOpenEdit = (_id: React.SetStateAction<string>, text: string) => {
     setOpenEdit(true);
     setUpdating(_id);
   };
@@ -44,13 +43,17 @@ export default function Tasks() {
     setOpenEdit(false);
   };
 
-  const styles = {
-    Box: {
-      padding: 20,
+
+  const CustomBox = styled(Box)({
+    // your custom styles go here
+    padding: 20,
       margin: "auto",
       textAlign: "center",
       width: 500
-    },
+  }) as typeof Box;
+
+  const styles = {
+
     Form: {
       padding: 20,
       margin: "auto",
@@ -75,10 +78,10 @@ export default function Tasks() {
     .catch((err) => console.log(err))
   },[done])
 
-  const addTodo = (event) => {
-    event.preventDefault();
+  const addTodo = () => {
+    
     if (isUpdating === "") {
-      axios.post("/addTodo", {text})
+      axios.post("/addTodo", {text})  
       .then((res) => {
 
         setText("");
@@ -96,20 +99,15 @@ export default function Tasks() {
     }
   }
 
-  const deleteTodo = (_id) => {
+  const deleteTodo = (_id: any) => {
     axios.post("/deleteTodo", {_id})
     .then((res) => {
 
     })
     .catch((err) => console.log(err))
   }
-
-  // const updateTodo = (_id, text) => {
-  //   setUpdating(_id);
-  //   // setText(text);
-  // }
   
-  const completeTodo = (_id, complete) => {
+  const completeTodo = (_id: any, complete: boolean) => {
     axios.put("/completeTodo", {_id, complete})
     .then((res) => {
  
@@ -122,13 +120,14 @@ export default function Tasks() {
   };
 
   return (
+    <ThemeProvider theme={theme}>
     <div className="Todo">     
       <form style={styles.Form} onSubmit={addTodo}>
           <Input
           placeholder="What need to be done?"
             type="text"
             value={text}
-            onChange = {(e) => setText (e.target.value)}
+            onChange = {e => setText (e.target.value)}
             endAdornment={ 
                 <IconButton
                   edge="end" type="submit"
@@ -139,7 +138,7 @@ export default function Tasks() {
             autoFocus = {true}
           />
         </form>
-        <Box style={styles.Box}>    
+        <CustomBox>    
       <Dialog open={openEdit} onClose={handleCloseEdit}>
         <DialogTitle>Edit</DialogTitle>
         <DialogContent>
@@ -147,12 +146,7 @@ export default function Tasks() {
           <Input
             type="text"
             value={text}
-            onChange = {(e) => setText (e.target.value)}
-            // endAdornment={ 
-            //     <IconButton edge="end" type="submit">
-            //       <CreateIcon color="success"/>
-            //     </IconButton>
-            // }
+            onChange = {e => setText (e.target.value)}
             autoFocus = {true}
           />
         </form>
@@ -174,7 +168,7 @@ export default function Tasks() {
           secondaryAction={
             <>    
               <IconButton  onClick={() => {if(window.confirm('Delete the item?'))deleteTodo(_id)}}> <DeleteIcon fontSize="small" /> </IconButton>
-              <IconButton  onClick={() => handleClickOpenEdit(_id, text)}> <CreateIcon fontSize="small" /> </IconButton>
+              <IconButton  onClick={() => handleClickOpenEdit(_id,text)}> <CreateIcon fontSize="small" /> </IconButton>
               <IconButton  onClick={() => completeTodo(_id, complete)}> <RadioButtonUncheckedIcon fontSize="small" /> </IconButton>
             </>
           }
@@ -183,9 +177,9 @@ export default function Tasks() {
         </ListItem>
       ))}
     </List>
-    </Box>
+    </CustomBox>
 
-    <Box style={styles.Box}> 
+    <CustomBox> 
     <div style={{textAlign:"left"}}>
     <ListItemButton  onClick={handleOpen} >
       <h1 >Tasks completed</h1> {open ? <ExpandLess /> : <ExpandMore />}
@@ -201,7 +195,7 @@ export default function Tasks() {
           secondaryAction={
             <>    
               <IconButton  onClick={() => {if(window.confirm('Delete the item?'))deleteTodo(_id)}}> <DeleteIcon fontSize="small" /> </IconButton>
-              <IconButton  onClick={() => handleClickOpenEdit(_id, text)}> <CreateIcon fontSize="small" /> </IconButton>
+              <IconButton  onClick={() => handleClickOpenEdit(_id,text)}> <CreateIcon fontSize="small" /> </IconButton>
               <IconButton  onClick={() => completeTodo(_id, complete)}> <CheckCircleIcon fontSize="small" /> </IconButton>
             </>
           }
@@ -211,11 +205,9 @@ export default function Tasks() {
       ))}
     </List>
     </Collapse>
-    </Box>
-
-
-
+    </CustomBox>
     </div>
+    </ThemeProvider>
   )
         }
 

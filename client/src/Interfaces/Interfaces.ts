@@ -3,3 +3,9 @@ export interface UserInterface {
     username: string;
     isAdmin: Boolean;
 }
+
+export interface TaskInterface {
+    text: string;
+    complete: Boolean;
+    _id: string;
+}

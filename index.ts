@@ -16,8 +16,6 @@ import Route from './src/routes/Route'
 
 dotenv.config()
 
-
-
 // Middleware
 const app = express();
 
