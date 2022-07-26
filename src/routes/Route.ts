@@ -8,8 +8,9 @@ import session from 'express-session';
 
 import User from '../Model/User';
 import TodoModel from '../Model/Todo';
+import MessageModel from '../Model/Message';
 
-import { DatabaseUserInterface, UserInterface, TaskInterface } from '../../Interfaces/Interface';
+import { DatabaseUserInterface, UserInterface, TaskInterface, MessageInterface } from '../../Interfaces/Interface';
 
 // import UserRoute from './routes/UserRoute'
 import bcrypt from 'bcryptjs';
@@ -168,5 +169,26 @@ router.post('/deleteTodo', async (req,res) => {
      res.send("Updated Successfully!");
     })
 
+// Communication Route
+router.post('/addMessage', async (req, res) => {
+    const { message } : any = req.body;
+ 
+    MessageModel
+    .create({message})
+    .then(() => res.send("Added Successfully..."))
+    .catch((err) => console.log(err))
+ })
+
+ router.post("/deleteMessage", isAdministratorMiddleware, async (req, res) => {
+    const {id} = req?.body;
+    await MessageModel.findByIdAndDelete(id, (err : any) => {
+        if (!err) {
+            res.send("success")
+        } else {
+            throw err;
+        }
+    }).clone().catch(function(err){ console.log(err)})
+    
+})
 
   export default router 

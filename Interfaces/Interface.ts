@@ -16,3 +16,8 @@ export interface TaskInterface {
     complete: Boolean;
     _id: string;
 }
+
+export interface MessageInterface {
+    text: string;
+    _id: string;
+}
