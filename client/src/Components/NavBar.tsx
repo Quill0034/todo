@@ -17,10 +17,13 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import PersonIcon from '@mui/icons-material/Person';
-
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 export default function NavBar() {
   const ctx = useContext(myContext);
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
+
+  const theme = createTheme();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -40,10 +43,13 @@ export default function NavBar() {
   }
 
   return (
-    <div>
-      <AppBar position="static">
-        <Container maxWidth="xl">
-          <Toolbar disableGutters>
+    <>
+    <ThemeProvider theme={theme}>
+    <CssBaseline />
+   
+      <AppBar position="static" >
+      <Container maxWidth="xl">
+          <Toolbar disableGutters variant="dense">
             <AddTaskIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
             <Typography
             variant="h6"
@@ -90,19 +96,25 @@ export default function NavBar() {
               sx={{
                 display: { xs: 'block', md: 'none' },
               }}
+            // eslint-disable-next-line react/jsx-no-comment-textnodes
             >
+          
                <MenuItem onClick={handleCloseNavMenu}>
-                <Link component={RouterLink} onClick={logout} underline="none" textAlign="center" to="/">Logout </Link>
+               
+                <Typography style={{textDecoration:'none'}} onClick={logout} textAlign="center" component="a" href="/" >Logout</Typography>
                 </MenuItem>
                 {ctx.isAdmin ? (
                 <MenuItem onClick={handleCloseNavMenu}>
-                  <Link component={RouterLink} underline="none"  to="/admin">Admin</Link> </MenuItem>
+                  <Typography style={{textDecoration:'none'}} textAlign="center" component="a"  href="/admin" >admin</Typography> </MenuItem>
                 ) : null}
                 <MenuItem onClick={handleCloseNavMenu}>  
-                <Link component={RouterLink} underline="none"  to="/profile">Profile</Link>
+                <Typography style={{textDecoration:'none'}} textAlign="center" component="a"  href="/profile" >profile</Typography>
                 </MenuItem>
                 <MenuItem onClick={handleCloseNavMenu}>  
-                <Link component={RouterLink} underline="none" to="/Tasks">Task</Link>
+                <Typography style={{textDecoration:'none'}} textAlign="center" component="a"  href="/tasks" >Task</Typography>
+                </MenuItem>
+                <MenuItem onClick={handleCloseNavMenu}>  
+                <Typography style={{textDecoration:'none'}} textAlign="center" component="a"  href="/messageBoard" >Message</Typography>
                 </MenuItem>
             </Menu>
           </Box>
@@ -133,23 +145,32 @@ export default function NavBar() {
                 to="/Logout"
               >
                 Logout
-                {ctx.isAdmin ? (<Link component={RouterLink} to="/admin">Admin</Link>) : null}  
+                  
               </Button>
+              {ctx.isAdmin ? (<Button onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }} component={RouterLink} to="/admin">Admin</Button>) : null}
               <Button
-                // onClick={handleCloseNavMenu}
+                onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
                 component={RouterLink}
-                to="/Profile"
+                to="/profile"
               >
                  Profile
                 </Button>
                 <Button
-                // onClick={handleCloseNavMenu}
+                onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
                 component={RouterLink}
-                to="/Tasks"
+                to="/tasks"
               >
                  Task
+                </Button>
+                <Button
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+                component={RouterLink}
+                to="/messageBoard"
+              >
+                 Message
                 </Button>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
@@ -161,18 +182,10 @@ export default function NavBar() {
             </Tooltip>
           </Box>
           </Toolbar>
-        </Container>
+          </Container>
       </AppBar>
-
-
-
-
-
-
-
-
-
-
+      
+      </ThemeProvider>
 
 
 
@@ -194,7 +207,6 @@ export default function NavBar() {
       <Link to="/Tasks">Task</Link> */}
 
       
-      
-    </div>
+</>
   )
 }

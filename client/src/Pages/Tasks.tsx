@@ -24,7 +24,8 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { makeStyles } from "@material-ui/core/styles";
+
+
 export default function Tasks() {
   const [text, setText] = useState("");
   const [todo, setTodo] = useState([]);
@@ -41,27 +42,6 @@ export default function Tasks() {
   const handleCloseEdit = () => {
     setOpenEdit(false);
   };
-
-  const useStyles = makeStyles({
-    Box: {
-      padding: 20,
-      margin: "auto",
-      textAlign: "center",
-      width: 500
-    },
-    Form: {
-      padding: 20,
-      margin: "auto",
-      width: 500
-    },
-    List: {
-      width: '100%',
-      maxWidth: 360,
-      bgcolor: 'background.paper',
-    }
-  });
-
-  const classes = useStyles();
 
   useEffect(() => {
     axios.get("/todos")
@@ -123,7 +103,7 @@ export default function Tasks() {
 
   return (
     <div className="Todo">     
-      <form className={classes.Form} onSubmit={addTodo}>
+      <form style={{padding: 20, margin: "auto", width: 500}} onSubmit={addTodo}>
           <Input
           placeholder="What need to be done?"
             type="text"
@@ -140,11 +120,11 @@ export default function Tasks() {
             autoFocus = {true}
           />
         </form>
-        <Box className={classes.Box}>    
+        <Box style={{ padding: 20, margin: "auto", textAlign: "center", width: 500}}>    
       <Dialog open={openEdit} onClose={handleCloseEdit}>
         <DialogTitle>Edit</DialogTitle>
         <DialogContent>
-          <form className={classes.Form} onSubmit={addTodo}>
+          <form style={{padding: 20, margin: "auto", width: 500}}  onSubmit={addTodo}>
           <Input
             type="text"
             value={text}
@@ -180,7 +160,7 @@ export default function Tasks() {
     </List>
     </Box>
 
-    <Box className={classes.Box} > 
+    <Box style={{ padding: 20, margin: "auto", textAlign: "center", width: 500}} > 
     <div style={{textAlign:"left"}}>
     <ListItemButton  onClick={handleOpen} >
       <h1 >Tasks completed</h1> {open ? <ExpandLess /> : <ExpandMore />}

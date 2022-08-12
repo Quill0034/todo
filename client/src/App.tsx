@@ -10,6 +10,7 @@ import Register from './Pages/Register';
 import Welcome from './Pages/Welcome';
 import ForgotPassword from './Pages/ForgotPassword';
 import Tasks from './Pages/Tasks';
+import MessageBoard from './Pages/MessageBoard';
 
 import "./main.css";
 import { myContext } from './Pages/Context';
@@ -24,12 +25,10 @@ const ctx = useContext(myContext);
 
   return (
     <div >
-      <BrowserRouter>
-     
-      {ctx ? <NavBar /> : null}
       
+      <BrowserRouter>
+      {ctx ? <NavBar /> : null}
       <Routes>
-        
       
       <Route path='/welcome' element={<Welcome/>}/>  
       <Route path='/forgotPassword' element={<ForgotPassword/>}/>  
@@ -39,7 +38,8 @@ const ctx = useContext(myContext);
             
             {ctx.isAdmin ? <Route path='/admin' element={<AdminPage/>}/> : null }
             <Route path='/profile'  element={<Profile/>}/>
-            <Route path='/Tasks' element={<Tasks/>}/>   
+            <Route path='/tasks' element={<Tasks/>}/>   
+            <Route path='/messageBoard' element={<MessageBoard/>}/>   
             </>
           ) : (
             <>

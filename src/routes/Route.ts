@@ -179,6 +179,11 @@ router.post('/addMessage', async (req, res) => {
     .catch((err) => console.log(err))
  })
 
+router.get('/messageBoard', async ( req, res) => {
+    const Message = await MessageModel.find();
+    res.send(Message)
+})
+
  router.post("/deleteMessage", isAdministratorMiddleware, async (req, res) => {
     const {id} = req?.body;
     await MessageModel.findByIdAndDelete(id, (err : any) => {
