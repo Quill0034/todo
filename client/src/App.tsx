@@ -36,8 +36,7 @@ const ctx = useContext(myContext);
             
             {ctx.isAdmin ? <Route path='/admin' element={<AdminPage/>}/> : null }
             <Route path='/profile'  element={<Profile/>}/>
-            <Route path='/tasks' element={<Tasks/>}/>   
-            <Route path='/messageBoard' element={<MessageBoard/>}/>   
+            <Route path='/tasks' element={<Tasks/>}/>    
             <Route path='/announcement' element={<Announcement/>}/>  
             </>
           ) : (
