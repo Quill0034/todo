@@ -92,7 +92,7 @@ export default function Tasks() {
 
   return (
     <div>     
-<Container  maxWidth="lg" >    
+    <Container  maxWidth="lg" >    
       <form style={{maxWidth: 500}} onSubmit={addTodo}>
           <Input
           placeholder="What needs to be done?"
@@ -110,7 +110,7 @@ export default function Tasks() {
             autoFocus = {true}
           />
         </form>
-        </Container>
+      </Container>
 
         <Container  maxWidth="lg" >    
         <Dialog open={openEdit} onClose={handleCloseEdit}>
@@ -127,7 +127,6 @@ export default function Tasks() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseEdit} color="primary">Cancel</Button>
-          <Button type="submit" color="success">OK</Button>
         </DialogActions>
       </Dialog>
         <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
@@ -191,93 +190,7 @@ export default function Tasks() {
             </Collapse>
          
     </Container>
-
-
-      {/* <form style={{padding: 20, margin: "auto", width: 500}} onSubmit={addTodo}>
-          <Input
-          placeholder="What need to be done?"
-            type="text"
-            fullWidth={true}
-            value={text}
-            onChange = {(e) => setText (e.target.value)}
-            endAdornment={ 
-                <IconButton
-                  edge="end" type="submit"
-                >
-                  <AddBoxIcon color="success"/>
-                </IconButton>
-            }
-            autoFocus = {true}
-          />
-        </form>
-        <Box style={{ padding: 20, margin: "auto", textAlign: "center", width: 500}}>    
-      <Dialog open={openEdit} onClose={handleCloseEdit}>
-        <DialogTitle>Edit</DialogTitle>
-        <DialogContent>
-          <form style={{padding: 20, margin: "auto", width: 500}}  onSubmit={addTodo}>
-          <Input
-            type="text"
-            value={text}
-            onChange = {(e) => setText (e.target.value)}
-            autoFocus = {true}
-          />
-        </form>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseEdit} color="primary">Cancel</Button>
-          <Button type="submit" color="success">OK</Button>
-        </DialogActions>
-      </Dialog>
-    <h1 style={{textAlign:"left"}}> Tasks need to be done</h1>
-   
-      <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      {todo.map(({_id, text, complete}, i) => (
-        <ListItem
-          key={i}
-          divider
-          disableGutters
-          secondaryAction={
-            <>    
-              <IconButton  onClick={() => {if(window.confirm('Delete the item?'))deleteTodo(_id)}}> <DeleteIcon fontSize="small" /> </IconButton>
-              <IconButton  onClick={() => handleClickOpenEdit(_id, text)}> <CreateIcon fontSize="small" /> </IconButton>
-              <IconButton  onClick={() => completeTodo(_id, complete)}> <RadioButtonUncheckedIcon fontSize="small" /> </IconButton>
-            </>
-          }
-        >
-          <ListItemText primary={text} />
-        </ListItem>
-      ))}
-    </List>
-    </Box>
-
-    <Box style={{ padding: 20, margin: "auto", textAlign: "center", width: 500}} > 
-    <div style={{textAlign:"left"}}>
-    <ListItemButton  onClick={handleOpen} >
-      <h1 >Tasks completed</h1> {open ? <ExpandLess /> : <ExpandMore />}
-      </ListItemButton>
-      </div>
-      <Collapse in={open} timeout="auto" unmountOnExit>
-      <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      {done.map(({_id, text, complete}, i) => (
-        <ListItem
-          key={i}
-          divider
-          disableGutters
-          secondaryAction={
-            <>    
-              <IconButton  onClick={() => {if(window.confirm('Delete the item?'))deleteTodo(_id)}}> <DeleteIcon fontSize="small" /> </IconButton>
-              <IconButton  onClick={() => handleClickOpenEdit(_id, text)}> <CreateIcon fontSize="small" /> </IconButton>
-              <IconButton  onClick={() => completeTodo(_id, complete)}> <CheckCircleIcon fontSize="small" /> </IconButton>
-            </>
-          }
-        >
-          <ListItemText primary={text} />
-        </ListItem>
-      ))}
-    </List>
-    </Collapse>
-    </Box> */}
     </div>
   )
-        }
+}
 
