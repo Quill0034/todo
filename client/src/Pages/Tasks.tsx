@@ -1,39 +1,28 @@
 import React, {useState, useEffect} from 'react'
 import axios, { AxiosResponse } from 'axios'
 
-import Box from '@mui/material/Box';
-import IconButton from "@material-ui/core/IconButton";
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
+import {Button, Collapse, Container, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Input, List, ListItem, ListItemButton, ListItemText, Typography} from '@mui/material';
 
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import AddBoxIcon from '@mui/icons-material/AddBox';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CreateIcon from '@mui/icons-material/Create';
-import Button from '@mui/material/Button';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import Input from '@mui/material/Input';
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-import ListItemButton from '@mui/material/ListItemButton';
-import Collapse from '@mui/material/Collapse';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
 
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
+import { ExpandLess, ExpandMore } from '@material-ui/icons';
+
+
 
 
 export default function Tasks() {
-  const [text, setText] = useState("");
-  const [todo, setTodo] = useState([]);
-  const [done, setDone] = useState([]);
-  const [isUpdating, setUpdating] = useState("")
-  const [open, setOpen] = useState(false);
+  const [text, setText] =React.useState("");
+  const [todo, setTodo] = React.useState([]);
+  const [done, setDone] = React.useState([]);
+  const [isUpdating, setUpdating] = React.useState("")
+  const [open, setOpen] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
-
+  
   const handleClickOpenEdit = (_id: string, text: string) => {
     setOpenEdit(true);
     setUpdating(_id);
@@ -102,8 +91,109 @@ export default function Tasks() {
   };
 
   return (
-    <div className="Todo">     
-      <form style={{padding: 20, margin: "auto", width: 500}} onSubmit={addTodo}>
+    <div>     
+<Container  maxWidth="lg" >    
+      <form style={{maxWidth: 500}} onSubmit={addTodo}>
+          <Input
+          placeholder="What needs to be done?"
+            type="text"
+            fullWidth={true}
+            value={text}
+            onChange = {(e) => setText (e.target.value)}
+            endAdornment={ 
+                <IconButton
+                  edge="end" type="submit"
+                >
+                  <AddBoxIcon color="success"/>
+                </IconButton>
+            }
+            autoFocus = {true}
+          />
+        </form>
+        </Container>
+
+        <Container  maxWidth="lg" >    
+        <Dialog open={openEdit} onClose={handleCloseEdit}>
+        <DialogTitle>Edit</DialogTitle>
+        <DialogContent>
+          <form style={{padding: 20, margin: "auto", maxWidth: 500}}  onSubmit={addTodo}>
+          <Input
+            type="text"
+            value={text}
+            onChange = {(e) => setText (e.target.value)}
+            autoFocus = {true}
+          />
+        </form>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseEdit} color="primary">Cancel</Button>
+          <Button type="submit" color="success">OK</Button>
+        </DialogActions>
+      </Dialog>
+        <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
+            Tasks need to be done
+          </Typography>
+         
+            <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+              
+            {todo.map(({_id, text, complete}, i) => (
+        <ListItem
+          key={i}
+          divider
+          disableGutters
+          secondaryAction={
+            <>    
+              <IconButton  onClick={() => {if(window.confirm('Delete the item?'))deleteTodo(_id)}}> <DeleteIcon fontSize="small" /> </IconButton>
+              <IconButton  onClick={() => handleClickOpenEdit(_id, text)}> <CreateIcon fontSize="small" /> </IconButton>
+              <IconButton  onClick={() => completeTodo(_id, complete)}> <RadioButtonUncheckedIcon fontSize="small" /> </IconButton>
+            </>
+          }
+        >
+          <ListItemText primary={text} />
+        </ListItem>
+      ))}
+            </List>
+          
+    </Container>
+
+    <Container  maxWidth="lg" >  
+    <div>
+    <ListItemButton style={{padding: 0}}  onClick={handleOpen} >
+      <Typography variant="h6" component="div">
+              Tasks completed
+      </Typography>
+      
+      {open ? <ExpandLess /> : <ExpandMore />}
+      </ListItemButton>
+      </div>
+        
+         
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+              
+            {done.map(({_id, text, complete}, i) => (
+        <ListItem
+          key={i}
+          divider
+          disableGutters
+          secondaryAction={
+            <>    
+              <IconButton  onClick={() => {if(window.confirm('Delete the item?'))deleteTodo(_id)}}> <DeleteIcon fontSize="small" /> </IconButton>
+              <IconButton  onClick={() => handleClickOpenEdit(_id, text)}> <CreateIcon fontSize="small" /> </IconButton>
+              <IconButton  onClick={() => completeTodo(_id, complete)}> <CheckCircleIcon fontSize="small" /> </IconButton>
+            </>
+          }
+        >
+          <ListItemText primary={text} />
+        </ListItem>
+      ))}
+            </List>
+            </Collapse>
+         
+    </Container>
+
+
+      {/* <form style={{padding: 20, margin: "auto", width: 500}} onSubmit={addTodo}>
           <Input
           placeholder="What need to be done?"
             type="text"
@@ -186,7 +276,7 @@ export default function Tasks() {
       ))}
     </List>
     </Collapse>
-    </Box>
+    </Box> */}
     </div>
   )
         }

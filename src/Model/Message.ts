@@ -5,6 +5,10 @@ const MessageSchema = new Schema({
 	message: {
 		type: String,
 		required: true
+	},
+	username: {
+		type: String,
+		required: true
 	}
 });
 

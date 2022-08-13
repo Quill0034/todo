@@ -1,4 +1,4 @@
-import { Box, IconButton, Input, List, ListItem, ListItemText} from '@mui/material';
+import {Container, IconButton, Input, List, ListItem, ListItemAvatar, ListItemText, Typography} from '@mui/material';
 
 import axios, { AxiosResponse } from 'axios';
 import React, { useContext, useEffect, useState } from 'react'
@@ -7,11 +7,15 @@ import { myContext } from './Context';
 
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import DeleteIcon from '@mui/icons-material/Delete';
+
+
 export default function MessageBoard() {
+  
   const ctx = useContext(myContext);
   
-  const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]);
+  const [message, setMessage] = React.useState("");
+  const [messages, setMessages] = React.useState([]);
+
   useEffect(() => {
     axios.get("/messageBoard")
     .then((res) => setMessages(res.data))
@@ -21,7 +25,11 @@ export default function MessageBoard() {
 
   const addMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    axios.post("/addMessage", {message})
+    const newMessage = {
+      username: ctx.username,
+      message,
+    }
+    axios.post("/addMessage", newMessage)
     .then((res) => {
       setMessage("");
     })
@@ -30,7 +38,8 @@ export default function MessageBoard() {
 
   return (
     <div>     
-      <form style={{padding: 20, margin: "auto", width: 500}} onSubmit={addMessage}>
+      <Container  maxWidth="lg" >    
+      <form style={{maxWidth: 500}} onSubmit={addMessage}>
           <Input
           placeholder="Type your message here..."
             type="text"
@@ -47,27 +56,41 @@ export default function MessageBoard() {
             autoFocus = {true}
           />
         </form>
-        <Box >    
-      
-    <h1 style={{textAlign:"left"}}> Messages</h1>
-   
-      <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      {messages.map(({message}, i) => (
+        </Container>
+        <Container  maxWidth="lg" >    
+        <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
+            MessageBoard
+          </Typography>
+         
+            <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+              
+            {messages.map(({message, username}, i) => (
         <ListItem
           key={i}
-          divider
           disableGutters
+          divider
           secondaryAction={
             <>    
-              <IconButton> <DeleteIcon fontSize="small" /> </IconButton>
+              <IconButton edge="end" aria-label="delete"> <DeleteIcon fontSize="small" /> </IconButton>
+             
+            
+              <IconButton edge="end" aria-label="delete"> <AddBoxIcon fontSize="small" /> </IconButton>
               </>
+              
           }
         >
-          <ListItemText primary={message} />
+          <ListItemAvatar>
+                      {username}
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={message}
+                    secondary= 'Secondary text' 
+                  />     
         </ListItem>
       ))}
-    </List>
-    </Box>
+            </List>
+         
+    </Container>
 
     
     </div>

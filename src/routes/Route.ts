@@ -171,10 +171,10 @@ router.post('/deleteTodo', async (req,res) => {
 
 // Communication Route
 router.post('/addMessage', async (req, res) => {
-    const { message } : any = req.body;
+    const { message, username } : any = req.body;
  
     MessageModel
-    .create({message})
+    .create({message, username})
     .then(() => res.send("Added Successfully..."))
     .catch((err) => console.log(err))
  })

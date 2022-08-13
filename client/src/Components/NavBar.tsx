@@ -50,14 +50,14 @@ export default function NavBar() {
       <AppBar position="static" >
       <Container maxWidth="xl">
           <Toolbar disableGutters variant="dense">
-            <AddTaskIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+            
             <Typography
             variant="h6"
             noWrap
             component="a"
             href="/welcome"
             sx={{
-              mr: 2,
+              
               display: { xs: 'none', md: 'flex' },
               fontFamily: 'monospace',
               fontWeight: 700,
@@ -118,14 +118,14 @@ export default function NavBar() {
                 </MenuItem>
             </Menu>
           </Box>
-          <AddTaskIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          
           <Typography
             variant="h5"
             noWrap
             component="a"
             href=""
             sx={{
-              mr: 2,
+              
               display: { xs: 'flex', md: 'none' },
               flexGrow: 1,
               fontFamily: 'monospace',
@@ -174,7 +174,7 @@ export default function NavBar() {
                 </Button>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
-          <Tooltip title="Open settings">
+          <Tooltip title="Open profile">
               <IconButton component={RouterLink}
                 to="/Profile" sx={{ p: 0 }}>
                 <PersonIcon/>
