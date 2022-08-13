@@ -116,6 +116,9 @@ export default function NavBar() {
                 <MenuItem onClick={handleCloseNavMenu}>  
                 <Typography style={{textDecoration:'none'}} textAlign="center" component="a"  href="/messageBoard" >Message</Typography>
                 </MenuItem>
+                <MenuItem onClick={handleCloseNavMenu}>  
+                <Typography style={{textDecoration:'none'}} textAlign="center" component="a"  href="/announcement" >Announcement</Typography>
+                </MenuItem>
             </Menu>
           </Box>
           
@@ -171,6 +174,14 @@ export default function NavBar() {
                 to="/messageBoard"
               >
                  Message
+                </Button>
+                <Button
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: 'white', display: 'block' }}
+                component={RouterLink}
+                to="/announcement"
+              >
+                 Announcement
                 </Button>
           </Box>
           <Box sx={{ flexGrow: 0 }}>

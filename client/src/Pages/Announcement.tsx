@@ -9,7 +9,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
-export default function MessageBoard() {
+export default function Announce() {
   
   const ctx = useContext(myContext);
   

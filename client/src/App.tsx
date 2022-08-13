@@ -11,9 +11,11 @@ import Welcome from './Pages/Welcome';
 import ForgotPassword from './Pages/ForgotPassword';
 import Tasks from './Pages/Tasks';
 import MessageBoard from './Pages/MessageBoard';
+import Announcement from './Pages/Announcement';
 
 import "./main.css";
 import { myContext } from './Pages/Context';
+
 
 function App() {
 const ctx = useContext(myContext);
@@ -36,6 +38,7 @@ const ctx = useContext(myContext);
             <Route path='/profile'  element={<Profile/>}/>
             <Route path='/tasks' element={<Tasks/>}/>   
             <Route path='/messageBoard' element={<MessageBoard/>}/>   
+            <Route path='/announcement' element={<Announcement/>}/>  
             </>
           ) : (
             <>
