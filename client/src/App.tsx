@@ -15,10 +15,6 @@ import MessageBoard from './Pages/MessageBoard';
 import "./main.css";
 import { myContext } from './Pages/Context';
 
-
-
-
-
 function App() {
 const ctx = useContext(myContext);
 

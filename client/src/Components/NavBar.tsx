@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import { myContext } from '../Pages/Context';
 
-import Link from '@mui/material/Link';
+
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -15,7 +15,7 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AddTaskIcon from '@mui/icons-material/AddTask';
+
 import PersonIcon from '@mui/icons-material/Person';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';

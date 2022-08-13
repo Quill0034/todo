@@ -72,9 +72,6 @@ export default function MessageBoard() {
           secondaryAction={
             <>    
               <IconButton edge="end" aria-label="delete"> <DeleteIcon fontSize="small" /> </IconButton>
-             
-            
-              <IconButton edge="end" aria-label="delete"> <AddBoxIcon fontSize="small" /> </IconButton>
               </>
               
           }
