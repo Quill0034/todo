@@ -16,7 +16,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 
-import PersonIcon from '@mui/icons-material/Person';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 export default function NavBar() {
@@ -64,6 +64,7 @@ export default function NavBar() {
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
+              marginRight: '1.5rem',
             }}
           >
             QUY-TODO
@@ -98,11 +99,6 @@ export default function NavBar() {
               }}
             // eslint-disable-next-line react/jsx-no-comment-textnodes
             >
-          
-               <MenuItem onClick={handleCloseNavMenu}>
-               
-                <Typography style={{textDecoration:'none'}} onClick={logout} textAlign="center" component="a" href="/" >Logout</Typography>
-                </MenuItem>
                 {ctx.isAdmin ? (
                 <MenuItem onClick={handleCloseNavMenu}>
                   <Typography style={{textDecoration:'none'}} textAlign="center" component="a"  href="/admin" >admin</Typography> </MenuItem>
@@ -125,7 +121,6 @@ export default function NavBar() {
             component="a"
             href=""
             sx={{
-              
               display: { xs: 'flex', md: 'none' },
               flexGrow: 1,
               fontFamily: 'monospace',
@@ -133,20 +128,12 @@ export default function NavBar() {
               letterSpacing: '.3rem',
               color: 'inherit',
               textDecoration: 'none',
+              
             }}
           >
             QUY-TODOS
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-              <Button
-                onClick={logout}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-                component={RouterLink}
-                to="/Logout"
-              >
-                Logout
-                  
-              </Button>
               {ctx.isAdmin ? (<Button onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }} component={RouterLink} to="/admin">Admin</Button>) : null}
               <Button
                 onClick={handleCloseNavMenu}
@@ -174,10 +161,11 @@ export default function NavBar() {
                 </Button>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
-          <Tooltip title="Open profile">
-              <IconButton component={RouterLink}
-                to="/Profile" sx={{ p: 0 }}>
-                <PersonIcon/>
+          <Tooltip title="Log out">
+              <IconButton
+              onClick={logout}
+              sx={{ p: 0 }}>
+                <LogoutIcon/>
               </IconButton>
             </Tooltip>
           </Box>

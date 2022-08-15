@@ -8,8 +8,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CreateIcon from '@mui/icons-material/Create';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-
-
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 
 
@@ -92,7 +90,7 @@ export default function Tasks() {
 
   return (
     <div>     
-    <Container  maxWidth="lg" >    
+    <Container  maxWidth="md" >    
       <form style={{maxWidth: 500}} onSubmit={addTodo}>
           <Input
           placeholder="What needs to be done?"
@@ -112,7 +110,7 @@ export default function Tasks() {
         </form>
       </Container>
 
-        <Container  maxWidth="lg" >    
+        <Container  maxWidth="md" >    
         <Dialog open={openEdit} onClose={handleCloseEdit}>
         <DialogTitle>Edit</DialogTitle>
         <DialogContent>
@@ -155,7 +153,7 @@ export default function Tasks() {
           
     </Container>
 
-    <Container  maxWidth="lg" >  
+    <Container  maxWidth="md" >  
     <div>
     <ListItemButton style={{padding: 0}}  onClick={handleOpen} >
       <Typography variant="h6" component="div">

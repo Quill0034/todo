@@ -63,14 +63,14 @@ export default function Announce() {
          
             <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
               
-            {messages.map(({message, username}, i) => (
+            {messages.map(({message, username, createdAt}, i) => (
         <ListItem
           key={i}
           disableGutters
           divider
           secondaryAction={
             <>    
-              <IconButton edge="end" aria-label="delete"> <DeleteIcon fontSize="small" /> </IconButton>
+              {ctx.isAdmin?<IconButton edge="end" aria-label="delete"> <DeleteIcon fontSize="small" /> </IconButton>: null}
               </>
               
           }
@@ -80,7 +80,7 @@ export default function Announce() {
                   </ListItemAvatar>
                   <ListItemText
                     primary={message}
-                    secondary= 'Secondary text' 
+                    secondary= {new Date(createdAt).toDateString()} 
                   />     
         </ListItem>
       ))}
